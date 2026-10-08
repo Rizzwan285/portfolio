@@ -1,0 +1,169 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-nav);
+  height: var(--nav-height);
+  transition:
+    transform 420ms var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.scrolled {
+  background: rgb(23 10 11 / 0.78);
+  box-shadow: inset 0 -1px 0 var(--line);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.hidden {
+  transform: translateY(-100%);
+}
+
+.inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.18rem;
+  font-size: 1.6rem;
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--print);
+}
+
+/* The safelight lamp. It glows a little brighter on hover. */
+.lamp {
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-top: 0.82rem;
+  border-radius: 50%;
+  background: var(--safelight);
+  box-shadow: 0 0 10px 1px var(--safelight-glow);
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+.logo:hover .lamp {
+  box-shadow: 0 0 18px 4px var(--safelight-glow);
+}
+
+.links {
+  display: none;
+  margin-left: auto;
+}
+
+.links ul {
+  display: flex;
+  gap: clamp(0.9rem, 1.6vw, 1.6rem);
+}
+
+.link {
+  position: relative;
+  display: inline-block;
+  padding-block: 0.5rem;
+  font-size: 0.9375rem;
+  font-stretch: var(--label-stretch);
+  font-weight: 520;
+  color: var(--fixer);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--safelight);
+  box-shadow: 0 0 8px var(--safelight-glow);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--print);
+}
+
+.active {
+  color: var(--print);
+}
+
+.active::after {
+  opacity: 1;
+  transform: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.resume,
+.contact {
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  font-size: 0.9375rem;
+}
+
+.resume {
+  display: none;
+}
+
+.menuButton {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: var(--print);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+.menuButton:hover {
+  box-shadow: inset 0 0 0 1px var(--print);
+}
+
+.menuButton svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+@media (max-width: 479px) {
+  .contact {
+    display: none;
+  }
+}
+
+@media (min-width: 1100px) {
+  .links {
+    display: block;
+  }
+
+  .actions {
+    margin-left: var(--space-4);
+  }
+
+  .resume {
+    display: inline-flex;
+  }
+
+  .menuButton {
+    display: none;
+  }
+}

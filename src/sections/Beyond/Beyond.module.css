@@ -1,0 +1,77 @@
+.switchRow {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.switchNote {
+  max-width: 30rem;
+  font-size: 0.875rem;
+  color: var(--fixer);
+}
+
+.room {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(4.5rem, 9vw, 7.5rem);
+}
+
+.facts {
+  display: grid;
+  gap: var(--space-4) var(--space-7);
+}
+
+.fact {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.fact dt {
+  font-size: 0.875rem;
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+}
+
+.fact dd {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--print);
+}
+
+@media (min-width: 760px) {
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+  }
+}
+
+/* Shared sub-block heading for every part of the room */
+.block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+}
+
+.blockHead {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.blockTitle {
+  font-size: var(--step-3);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.92;
+}
+
+.blockNote {
+  max-width: 34rem;
+  color: var(--fixer);
+}
+
+@media (min-width: 900px) {
+  .blockHead {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--space-7);
+  }
+}

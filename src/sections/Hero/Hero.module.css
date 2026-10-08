@@ -1,0 +1,189 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-top: calc(var(--nav-height) + clamp(2rem, 7vh, 4.5rem));
+  padding-bottom: clamp(3.5rem, 9vh, 6rem);
+  overflow: hidden;
+}
+
+/* A pool of safelight falling across the top right of the page. */
+.lamp {
+  position: absolute;
+  top: -35vmax;
+  right: -25vmax;
+  width: 95vmax;
+  height: 95vmax;
+  background: radial-gradient(closest-side, rgb(255 74 58 / 0.2), rgb(255 74 58 / 0.07) 48%, transparent 74%);
+  pointer-events: none;
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.name {
+  display: grid;
+  margin-bottom: var(--space-6);
+  font-size: clamp(4rem, 1.2rem + 10vw, 9.75rem);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.84;
+  letter-spacing: -0.015em;
+  color: var(--print);
+}
+
+.line {
+  display: block;
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(0.06em);
+}
+
+.details,
+.figure {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+/* Entrance — the one orchestrated moment after the intro. */
+.ready .line {
+  animation: develop 1.15s var(--ease-out) forwards;
+  animation-delay: calc(var(--i) * 120ms);
+}
+
+.ready .details {
+  animation: rise 0.9s var(--ease-out) 0.4s forwards;
+}
+
+.ready .figure {
+  animation: rise 1.3s var(--ease-out) 0.55s forwards;
+}
+
+@keyframes develop {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.role {
+  max-width: 24ch;
+  font-size: var(--step-2);
+  font-weight: 560;
+  line-height: 1.2;
+  color: var(--print);
+}
+
+.intro {
+  max-width: 36rem;
+  margin-top: var(--space-4);
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--fixer);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-6);
+  font-size: 0.9375rem;
+}
+
+/* The figure sits in an enlarger easel: four corner blades frame it. */
+.figure {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+
+.easel {
+  position: relative;
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, rgb(255 74 58 / 0.1), transparent 75%);
+}
+
+.blades {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  --c: var(--print-dim);
+  background:
+    linear-gradient(var(--c), var(--c)) top left / 26px 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1px 26px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 26px 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1px 26px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 26px 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1px 26px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 26px 1px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1px 26px no-repeat;
+}
+
+.formula,
+.hint {
+  position: absolute;
+  bottom: 0.75rem;
+  font-size: var(--step--1);
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+  pointer-events: none;
+}
+
+.formula {
+  left: 0.9rem;
+  color: var(--print-dim);
+}
+
+.hint {
+  right: 0.9rem;
+}
+
+.caption {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+  max-width: 30rem;
+  margin-top: var(--space-5);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--fixer);
+}
+
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-7);
+  }
+
+  .figure {
+    margin-inline: 0 auto;
+  }
+}
+
+@media (max-width: 959px) {
+  .figure {
+    max-width: 26rem;
+  }
+}

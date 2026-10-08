@@ -1,0 +1,128 @@
+.tickets {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.slot {
+  display: flex;
+}
+
+.ticket {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: var(--velvet);
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow: hidden;
+  transition:
+    transform 450ms var(--ease-out),
+    box-shadow 450ms var(--ease-out);
+}
+
+.ticket:hover {
+  transform: translateY(-4px) rotate(-0.4deg);
+  box-shadow:
+    inset 0 0 0 1px var(--line-strong),
+    0 28px 60px -28px rgb(0 0 0 / 0.85);
+}
+
+/* Scarf stripes: safelight tones by default, true colours in daylight. */
+.scarf {
+  position: relative;
+  height: 12px;
+  background: var(--scarf-night);
+}
+
+.scarf::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--scarf-day);
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out);
+}
+
+.ticket:hover .scarf::after,
+:global([data-lights='on']) .scarf::after {
+  opacity: 1;
+}
+
+.art {
+  aspect-ratio: 16 / 10;
+}
+
+.body {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1.15rem 1.3rem 1.3rem;
+}
+
+.relation {
+  font-size: 0.8125rem;
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+}
+
+.team {
+  font-size: clamp(1.9rem, 1.3rem + 1.5vw, 2.6rem);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.95;
+}
+
+.nickname {
+  color: var(--print-dim);
+}
+
+/* The tear-off stub, with notches punched out of both edges. */
+.stub {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding: 0.95rem 1.3rem;
+  border-top: 2px dashed rgb(243 232 221 / 0.16);
+  font-size: 0.8125rem;
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+}
+
+.stub::before,
+.stub::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--darkroom);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.stub::before {
+  left: -8px;
+}
+
+.stub::after {
+  right: -8px;
+}
+
+.admit {
+  flex-shrink: 0;
+  color: var(--safelight-hot);
+}
+
+@media (min-width: 640px) {
+  .tickets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .tickets {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

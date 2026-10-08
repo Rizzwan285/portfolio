@@ -1,0 +1,49 @@
+/*
+ * Shared paint for the built-in artwork. Each shape reads two colours:
+ * --nX (how it looks under the safelight) and --dX (in daylight).
+ * Hovering a .lights-scope ancestor, or turning the lights on, swaps them.
+ */
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.f0,
+.f1,
+.f2,
+.f3 {
+  transition: fill 700ms var(--ease-out);
+}
+
+.s0,
+.s1,
+.s2,
+.s3 {
+  fill: none;
+  transition: stroke 700ms var(--ease-out);
+}
+
+.f0 { fill: var(--n0); }
+.f1 { fill: var(--n1); }
+.f2 { fill: var(--n2); }
+.f3 { fill: var(--n3); }
+.s0 { stroke: var(--n0); }
+.s1 { stroke: var(--n1); }
+.s2 { stroke: var(--n2); }
+.s3 { stroke: var(--n3); }
+
+:global(.lights-scope:hover) .f0, :global([data-lights='on']) .f0 { fill: var(--d0); }
+:global(.lights-scope:hover) .f1, :global([data-lights='on']) .f1 { fill: var(--d1); }
+:global(.lights-scope:hover) .f2, :global([data-lights='on']) .f2 { fill: var(--d2); }
+:global(.lights-scope:hover) .f3, :global([data-lights='on']) .f3 { fill: var(--d3); }
+:global(.lights-scope:hover) .s0, :global([data-lights='on']) .s0 { stroke: var(--d0); }
+:global(.lights-scope:hover) .s1, :global([data-lights='on']) .s1 { stroke: var(--d1); }
+:global(.lights-scope:hover) .s2, :global([data-lights='on']) .s2 { stroke: var(--d2); }
+:global(.lights-scope:hover) .s3, :global([data-lights='on']) .s3 { stroke: var(--d3); }
+
+.grain {
+  mix-blend-mode: overlay;
+  opacity: 0.55;
+  pointer-events: none;
+}

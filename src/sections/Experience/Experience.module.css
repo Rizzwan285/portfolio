@@ -1,0 +1,167 @@
+.timeline {
+  position: relative;
+  display: grid;
+  gap: var(--space-9);
+}
+
+/* The rail that connects every entry. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0;
+  left: 4px;
+  width: 1px;
+  background: linear-gradient(var(--line-strong), var(--line) 80%, transparent);
+}
+
+.entry {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  padding-left: var(--space-6);
+}
+
+.node {
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--safelight);
+  box-shadow: 0 0 12px 1px var(--safelight-glow);
+}
+
+.when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.dates {
+  font-size: 0.9375rem;
+  font-stretch: var(--label-stretch);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--print-dim);
+}
+
+.current {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-chip);
+  font-size: var(--step--1);
+  font-stretch: var(--label-stretch);
+  color: var(--safelight-hot);
+  background: var(--safelight-soft);
+}
+
+.current::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--safelight);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.body {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 46rem;
+}
+
+.role {
+  font-size: var(--step-3);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.95;
+}
+
+.org {
+  margin-top: 0.4rem;
+  font-size: var(--step-1);
+  color: var(--print);
+}
+
+.summary {
+  font-size: 1.0625rem;
+  color: var(--print-dim);
+}
+
+.points {
+  display: grid;
+  gap: 0.5rem;
+  padding-left: 1.1rem;
+  color: var(--fixer);
+}
+
+.points li::marker {
+  color: var(--safelight);
+}
+
+.builds {
+  display: grid;
+  gap: var(--space-3);
+  margin-block: var(--space-2);
+}
+
+.build {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: start;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-panel);
+  background: var(--velvet);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 0.9375rem;
+  color: var(--fixer);
+}
+
+.buildTitle {
+  font-size: 1.0625rem;
+  font-weight: 650;
+  color: var(--print);
+}
+
+@media (min-width: 720px) {
+  .builds {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .timeline::before {
+    left: calc(13rem + 4px);
+  }
+
+  .entry {
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: 0 var(--space-7);
+    padding-left: 0;
+  }
+
+  .when {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 0.15rem;
+  }
+
+  .node {
+    left: 13rem;
+  }
+
+  .body {
+    padding-left: var(--space-2);
+  }
+}

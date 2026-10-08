@@ -1,0 +1,322 @@
+/* Filters */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0 0.95rem;
+  border-radius: var(--radius-chip);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  color: var(--print-dim);
+  font-size: 0.9375rem;
+  font-stretch: var(--label-stretch);
+  font-weight: 560;
+  transition:
+    background-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.filter:hover {
+  color: var(--print);
+  box-shadow: inset 0 0 0 1px rgb(243 232 221 / 0.55);
+}
+
+.filterActive,
+.filterActive:hover {
+  background: var(--print);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.filterCount {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+}
+
+/* The contact sheet: frames on film base, sprocket holes top and bottom. */
+.sheet {
+  position: relative;
+  display: grid;
+  grid-auto-flow: row dense;
+  gap: 10px;
+  padding: 30px 10px;
+  border-radius: var(--radius-panel);
+  background: var(--darkroom-deep);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.sheet::before,
+.sheet::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 8px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, rgb(243 232 221 / 0.09) 0 12px, transparent 12px 26px);
+  pointer-events: none;
+}
+
+.sheet::before {
+  top: 11px;
+}
+
+.sheet::after {
+  bottom: 11px;
+}
+
+.slot {
+  display: flex;
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
+  transition:
+    opacity 450ms var(--ease-out),
+    filter 450ms var(--ease-out);
+}
+
+/* Filtering "burns down" frames that don't match instead of removing them. */
+.dimmed {
+  opacity: 0.26;
+  filter: saturate(0.4);
+}
+
+.frame {
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: clamp(1.25rem, 2.4vw, 1.8rem);
+  border-radius: var(--radius-print);
+  background: var(--velvet);
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow: hidden;
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+/* A soft light that follows the pointer, like a loupe over the sheet. */
+.frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgb(255 74 58 / 0.15), transparent 62%);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.frame:hover::before {
+  opacity: 1;
+}
+
+.frame:hover {
+  box-shadow: inset 0 0 0 1px rgb(255 74 58 / 0.4);
+}
+
+.frame:has(.open:focus-visible) {
+  outline: 2px solid var(--safelight);
+  outline-offset: 2px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  font-size: 0.8125rem;
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+}
+
+.dates {
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-size: var(--step-2);
+  font-stretch: 74%;
+  font-weight: 760;
+  line-height: 1.05;
+}
+
+.featured .title {
+  font-size: var(--step-3);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.95;
+}
+
+/* The title button stretches over the whole frame. */
+.open {
+  color: inherit;
+  text-align: left;
+  line-height: inherit;
+}
+
+.open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.open:focus-visible {
+  outline: none;
+}
+
+.titleText {
+  position: relative;
+  display: inline-block;
+}
+
+.keeper {
+  left: -0.1em;
+  bottom: -0.2em;
+  width: min(100% + 0.2em, 3.4em);
+  height: 0.26em;
+}
+
+.subtitle {
+  margin-top: -0.45rem;
+  font-size: 1rem;
+  color: var(--print-dim);
+}
+
+.featured .subtitle {
+  margin-top: 0.1rem;
+}
+
+.summary {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--fixer);
+}
+
+.featured .summary {
+  max-width: 40rem;
+  font-size: 1.0625rem;
+  color: var(--print-dim);
+}
+
+.metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.metricValue {
+  font-size: 2.1rem;
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 1;
+  color: var(--safelight);
+}
+
+.metricLabel {
+  font-size: 0.875rem;
+  color: var(--fixer);
+}
+
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  list-style: none;
+  padding: 0;
+}
+
+.pipeline li {
+  position: relative;
+  padding: 0.38rem 0.75rem;
+  border-radius: var(--radius-chip);
+  background: rgb(255 74 58 / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(255 74 58 / 0.28);
+  font-size: 0.8125rem;
+  font-stretch: var(--label-stretch);
+  color: var(--print-dim);
+}
+
+.pipeline li + li::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.45rem;
+  width: 0.45rem;
+  height: 1px;
+  background: rgb(255 74 58 / 0.55);
+}
+
+.tags {
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
+}
+
+.more {
+  font-stretch: var(--label-stretch);
+  font-weight: 560;
+  color: var(--print-dim);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.frame:hover .more {
+  color: var(--safelight-hot);
+}
+
+.links {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--print);
+}
+
+.link:hover {
+  color: var(--safelight-hot);
+}
+
+.link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (min-width: 720px) {
+  .sheet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1100px) {
+  .sheet {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

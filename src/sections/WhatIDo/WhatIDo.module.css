@@ -1,0 +1,161 @@
+.flow {
+  position: relative;
+  display: grid;
+  gap: var(--space-8);
+}
+
+.stageHead {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  padding-top: var(--space-5);
+  margin-bottom: var(--space-6);
+  border-top: 1px solid var(--line-strong);
+}
+
+.node {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--darkroom);
+  box-shadow:
+    inset 0 0 0 1.5px var(--safelight),
+    0 0 10px var(--safelight-glow);
+}
+
+.stageLabel {
+  font-size: var(--step-3);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.9;
+}
+
+.stageCaption {
+  font-size: var(--step--1);
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+}
+
+.disciplines {
+  display: grid;
+  gap: var(--space-7);
+  list-style: none;
+  padding: 0;
+}
+
+.discipline {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding-left: 1.15rem;
+  border-left: 1px solid var(--line);
+  transition: border-color var(--dur) var(--ease-out);
+}
+
+.discipline:hover {
+  border-left-color: var(--safelight);
+}
+
+.icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-bottom: 0.2rem;
+  color: var(--safelight);
+  transition: filter var(--dur) var(--ease-out);
+}
+
+.discipline:hover .icon {
+  filter: drop-shadow(0 0 6px var(--safelight-glow));
+}
+
+.title {
+  font-size: 1.4rem;
+  font-stretch: 78%;
+  font-weight: 720;
+  line-height: 1.1;
+}
+
+.text {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--print-dim);
+}
+
+.points {
+  display: grid;
+  gap: 0.4rem;
+  padding-left: 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--fixer);
+}
+
+.points li::marker {
+  color: var(--safelight);
+}
+
+.proof {
+  margin-top: 0.3rem;
+  font-size: 0.875rem;
+  color: var(--fixer);
+}
+
+.also {
+  margin-top: var(--space-8);
+  font-size: var(--step-1);
+  color: var(--print-dim);
+}
+
+@media (min-width: 700px) {
+  .models .disciplines {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-6);
+  }
+}
+
+@media (min-width: 1100px) {
+  .flow {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .stageHead {
+    padding-right: var(--space-5);
+  }
+
+  .stage:not(:last-child) .disciplines {
+    padding-right: var(--space-6);
+  }
+
+  .models .disciplines {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  /* A pulse of light travels the line from Data to Products. */
+  .flowing::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--safelight), transparent) no-repeat;
+    background-size: 18% 100%;
+    background-position: -30% 0;
+    animation: packet 3.8s var(--ease-in-out) 0.4s 2;
+    pointer-events: none;
+  }
+}
+
+@keyframes packet {
+  from {
+    background-position: -30% 0;
+  }
+  to {
+    background-position: 130% 0;
+  }
+}

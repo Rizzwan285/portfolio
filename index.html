@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>%SITE_TITLE%</title>
+    <meta name="description" content="%SITE_DESCRIPTION%" />
+    <meta name="author" content="Muhamed Rizwan Mehaboob" />
+    <meta name="theme-color" content="#170a0b" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="%SITE_TITLE%" />
+    <meta property="og:description" content="%SITE_DESCRIPTION%" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- og:url and og:image are added at build time when VITE_SITE_URL is set (see .env.example). -->
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Paint the darkroom colour before any script runs, so there is no white flash. -->
+    <style>
+      html,
+      body {
+        background: #170a0b;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="color: #f3e8dd; font: 16px/1.6 system-ui, sans-serif; padding: 2rem">
+        This portfolio needs JavaScript. You can still reach Muhamed Rizwan Mehaboob at
+        <a href="mailto:muhamed.rizwan2005@gmail.com" style="color: #ff4a3a">muhamed.rizwan2005@gmail.com</a>.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

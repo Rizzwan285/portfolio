@@ -1,0 +1,243 @@
+.viewfinder {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: 34rem;
+  border-radius: var(--radius-panel);
+  background: #0b0405;
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    inset 0 0 120px 30px rgb(0 0 0 / 0.65);
+  overflow: hidden;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+/* Keeps the copy legible over bright photos. */
+.scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(80deg, rgb(11 4 5 / 0.82), rgb(11 4 5 / 0.35) 55%, transparent 85%);
+  pointer-events: none;
+}
+
+/* Out of focus until you hover: then the lens racks focus. */
+.bokeh {
+  position: absolute;
+  inset: -6%;
+  filter: blur(18px);
+  transition: filter 900ms var(--ease-out);
+}
+
+.bokeh span {
+  position: absolute;
+  width: var(--size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.bokeh span::before,
+.bokeh span::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transition: opacity 700ms var(--ease-out);
+}
+
+.bokeh span::before {
+  background: radial-gradient(circle, var(--night) 0 55%, transparent 72%);
+  opacity: 0.55;
+}
+
+.bokeh span::after {
+  background: radial-gradient(circle, var(--day) 0 55%, transparent 72%);
+  opacity: 0;
+}
+
+.viewfinder:hover .bokeh {
+  filter: blur(5px);
+}
+
+.viewfinder:hover .bokeh span::before,
+:global([data-lights='on']) .bokeh span::before {
+  opacity: 0;
+}
+
+.viewfinder:hover .bokeh span::after,
+:global([data-lights='on']) .bokeh span::after {
+  opacity: 0.6;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-in-out);
+}
+
+.current {
+  opacity: 1;
+}
+
+/* The viewfinder overlay */
+.hud {
+  position: absolute;
+  inset: clamp(0.9rem, 2.5vw, 1.6rem);
+  z-index: -1;
+  pointer-events: none;
+  color: rgb(243 232 221 / 0.72);
+  font-size: 0.8125rem;
+  font-stretch: var(--label-stretch);
+  font-variant-numeric: tabular-nums;
+}
+
+.thirds {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background:
+    linear-gradient(90deg, transparent calc(33.33% - 0.5px), currentColor 0 calc(33.33% + 0.5px), transparent 0),
+    linear-gradient(90deg, transparent calc(66.66% - 0.5px), currentColor 0 calc(66.66% + 0.5px), transparent 0),
+    linear-gradient(transparent calc(33.33% - 0.5px), currentColor 0 calc(33.33% + 0.5px), transparent 0),
+    linear-gradient(transparent calc(66.66% - 0.5px), currentColor 0 calc(66.66% + 0.5px), transparent 0);
+}
+
+/* Focus point: hunts in red, locks in ivory on hover. */
+.focus {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 4.5rem;
+  height: 3.25rem;
+  translate: -50% -50%;
+  border: 1.5px solid var(--safelight);
+  border-radius: 3px;
+  transition:
+    width 500ms var(--ease-out),
+    height 500ms var(--ease-out),
+    border-color 300ms var(--ease-out);
+}
+
+.viewfinder:hover .focus {
+  width: 3.4rem;
+  height: 2.5rem;
+  border-color: var(--print);
+  transition-delay: 300ms;
+}
+
+.readouts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 1.25rem;
+}
+
+.readouts span:first-child {
+  padding: 0 0.35rem;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+}
+
+.meter {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  gap: 0.55rem;
+}
+
+.meter span:nth-child(3) {
+  color: var(--safelight-hot);
+}
+
+.count {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.copy {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  max-width: 34rem;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+.title {
+  font-size: var(--step-4);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.88;
+}
+
+.text {
+  font-size: 1.0625rem;
+  color: var(--print-dim);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.6);
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #fffaf3;
+  pointer-events: none;
+  animation: flash 420ms var(--ease-out) forwards;
+}
+
+@keyframes flash {
+  from {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Optional contact sheet of photos */
+.sheet {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.6rem;
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-print);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line);
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+.thumbActive {
+  box-shadow: 0 0 0 2px var(--safelight);
+}
+
+.thumbImage {
+  aspect-ratio: 3 / 2;
+}
+
+.caption {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  color: var(--fixer);
+}
+
+@media (min-width: 900px) {
+  .viewfinder {
+    min-height: 0;
+    aspect-ratio: 16 / 8;
+  }
+}

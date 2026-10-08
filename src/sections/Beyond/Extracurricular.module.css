@@ -1,0 +1,80 @@
+/* End credits: role on the left, who and when on the right, centred on a gutter. */
+.credits {
+  display: grid;
+  gap: var(--space-8);
+  padding: clamp(2rem, 6vw, 4rem) 0;
+  border-radius: var(--radius-panel);
+  background: radial-gradient(70% 60% at 50% 0%, rgb(255 74 58 / 0.07), transparent 70%);
+}
+
+.group {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.groupTitle {
+  text-align: center;
+  font-size: 0.9375rem;
+  font-stretch: var(--label-stretch);
+  font-weight: 620;
+  color: var(--safelight-hot);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.credit {
+  display: grid;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.role {
+  font-size: var(--step-2);
+  font-stretch: 78%;
+  font-weight: 720;
+  line-height: 1.1;
+  color: var(--print);
+}
+
+.detail {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.org {
+  color: var(--print-dim);
+}
+
+.when {
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--fixer);
+}
+
+.note {
+  max-width: 30rem;
+  margin: 0.2rem auto 0;
+  font-size: 0.875rem;
+  color: var(--fixer);
+}
+
+@media (min-width: 760px) {
+  .credit {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-7);
+    text-align: left;
+    align-items: baseline;
+  }
+
+  .role {
+    text-align: right;
+  }
+
+  .note {
+    margin-inline: 0;
+  }
+}

@@ -1,0 +1,28 @@
+.mark {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.mark path {
+  fill: none;
+  stroke: var(--safelight);
+  stroke-width: 2.6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 6px rgb(255 74 58 / 0.35));
+  transition: stroke-dashoffset 1100ms var(--ease-in-out) 200ms;
+}
+
+.drawn path {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark path {
+    stroke-dashoffset: 0;
+  }
+}

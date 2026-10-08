@@ -1,0 +1,264 @@
+.layout {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.stripCard {
+  min-width: 0;
+  padding: clamp(0.85rem, 2.4vw, 2rem);
+  border-radius: var(--radius-panel);
+  background: var(--darkroom-deep);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.scroller {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.matrix {
+  --cell: clamp(1.12rem, 2.5vw, 2.05rem);
+  border-collapse: separate;
+  border-spacing: 0;
+  width: max-content;
+  margin-inline: auto;
+}
+
+.matrix th,
+.matrix td {
+  padding: 0;
+  font-weight: inherit;
+}
+
+/* Column heads: project names set vertically, like film edge markings. */
+.colHead {
+  width: var(--cell);
+  height: 8.6rem;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+.colHead a {
+  display: inline-block;
+  padding: 0.3rem 0 0.7rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.8125rem;
+  font-stretch: var(--label-stretch);
+  font-weight: 520;
+  white-space: nowrap;
+  color: var(--fixer);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.colHead a:hover,
+.colHead.lit a {
+  color: var(--print);
+}
+
+.groupRow th {
+  padding: 1rem 0 0.45rem;
+  text-align: left;
+  font-size: var(--step--1);
+  font-stretch: var(--label-stretch);
+  font-weight: 620;
+  color: var(--safelight-hot);
+}
+
+.matrix tbody:first-of-type .groupRow th {
+  padding-top: 0.25rem;
+}
+
+.rowHead {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding-right: 0.85rem !important;
+  text-align: left;
+  background: var(--darkroom-deep);
+}
+
+.rowHead button {
+  padding: 0.15rem 0;
+  font-size: 0.875rem;
+  font-stretch: var(--label-stretch);
+  text-align: left;
+  white-space: nowrap;
+  color: var(--print-dim);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.rowHead button:hover,
+.rowActive .rowHead button {
+  color: var(--print);
+}
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Each cell is one frame of the strip; exposed frames glow. */
+.frame {
+  display: block;
+  width: calc(var(--cell) - 5px);
+  height: calc(var(--cell) - 7px);
+  margin: auto;
+  border-radius: 2px;
+  background: rgb(243 232 221 / 0.035);
+  box-shadow: inset 0 0 0 1px rgb(243 232 221 / 0.07);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.used .frame {
+  background: var(--safelight);
+  box-shadow: 0 0 10px -2px var(--safelight-glow);
+}
+
+.focusing .frame {
+  opacity: 0.28;
+}
+
+.focusing .lit .frame {
+  opacity: 1;
+}
+
+.used.lit .frame {
+  background: var(--safelight-hot);
+  box-shadow: 0 0 16px 0 var(--safelight-glow);
+}
+
+.lit:not(.used) .frame {
+  background: rgb(243 232 221 / 0.09);
+}
+
+.count {
+  min-width: 2.2rem;
+  padding-left: 0.75rem !important;
+  text-align: right;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--fixer);
+}
+
+.rowActive .count {
+  color: var(--print);
+}
+
+.caption {
+  min-height: 3.2em;
+  margin-top: var(--space-4);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--fixer);
+}
+
+.caption strong {
+  font-weight: 620;
+  color: var(--print);
+}
+
+.side {
+  display: grid;
+  gap: var(--space-8);
+  align-content: start;
+}
+
+.blockTitle {
+  margin-bottom: var(--space-4);
+  font-size: var(--step-2);
+  font-stretch: 78%;
+  font-weight: 720;
+}
+
+.blockNote {
+  margin: -0.5rem 0 var(--space-4);
+  font-size: 0.875rem;
+  color: var(--fixer);
+}
+
+.core li {
+  display: grid;
+  grid-template-columns: 3.4rem minmax(0, 1fr);
+  column-gap: var(--space-4);
+  align-items: center;
+  padding-block: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.core li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.coreCount {
+  font-size: 2.6rem;
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--safelight);
+}
+
+.coreName {
+  font-size: 1.125rem;
+  font-weight: 620;
+  line-height: 1.2;
+  color: var(--print);
+}
+
+.toolkit {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-4) var(--space-5);
+  align-items: baseline;
+}
+
+.toolkit dt {
+  font-size: 0.875rem;
+  font-stretch: var(--label-stretch);
+  color: var(--fixer);
+}
+
+.toolkit dd {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .stripCard {
+    padding: 0.75rem 0.6rem;
+  }
+
+  .rowHead {
+    padding-right: 0.55rem !important;
+  }
+
+  .rowHead button {
+    font-size: 0.8125rem;
+  }
+
+  .count {
+    min-width: 1.6rem;
+    padding-left: 0.45rem !important;
+  }
+
+  .colHead {
+    height: 7.8rem;
+  }
+
+  .colHead a {
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+}

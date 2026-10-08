@@ -1,0 +1,45 @@
+.list {
+  display: grid;
+}
+
+.item {
+  display: grid;
+  gap: 0.4rem var(--space-6);
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.date {
+  font-size: 0.9375rem;
+  font-stretch: var(--label-stretch);
+  font-variant-numeric: tabular-nums;
+  color: var(--fixer);
+}
+
+.title {
+  font-size: var(--step-2);
+  font-stretch: 80%;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.issuer {
+  margin-top: 0.25rem;
+  color: var(--print-dim);
+}
+
+.link {
+  justify-self: start;
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 760px) {
+  .item {
+    grid-template-columns: 10rem minmax(0, 1fr) auto;
+    align-items: baseline;
+  }
+}
