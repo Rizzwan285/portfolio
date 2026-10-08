@@ -6,11 +6,11 @@ Usage (needs Python 3 with RDKit and NumPy):
 
 To show a different molecule, change SMILES and NAME below. The script
 embeds 60 conformers, keeps those within 6 kcal/mol of the lowest energy,
-and picks the most compact one so it reads well when rotated.
+and picks the most compact one so it reads well when rotated...
 """
 import json
 import sys
-
+ 
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem, Descriptors, rdMolDescriptors
