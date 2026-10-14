@@ -15,7 +15,7 @@ interface DevelopProps {
 
 /**
  * Reveals its content once, the first time it scrolls into view, by
- * sharpening it from a soft blur — like a print coming up in the developer.
+ * sharpening it from a soft blur, like a print coming up in the developer.
  */
 export function Develop({ as = 'div', delay = 0, className, id, children }: DevelopProps) {
   const [node, setNode] = useState<HTMLElement | null>(null);

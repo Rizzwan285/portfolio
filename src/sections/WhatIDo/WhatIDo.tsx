@@ -17,7 +17,7 @@ const ICONS: Record<DisciplineIcon, LucideIcon> = {
 };
 
 /**
- * "What I do", laid out as the path data takes — Data → Models → Products —
+ * "What I do", laid out as the path data takes (Data, Models, Products),
  * with each discipline placed at the stage where it works.
  */
 export function WhatIDo() {

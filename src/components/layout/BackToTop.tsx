@@ -1,7 +1,7 @@
 import { ArrowUp } from 'lucide-react';
 import { useScrollMetrics } from '../../hooks/useScrollMetrics.ts';
 import { cx } from '../../lib/cx.ts';
-import { scrollToHash } from '../../lib/scroll.ts';
+import { scrollToTop } from '../../lib/router.ts';
 import styles from './BackToTop.module.css';
 
 const RADIUS = 21;
@@ -16,7 +16,7 @@ export function BackToTop() {
     <button
       type="button"
       className={cx(styles.button, visible && styles.visible)}
-      onClick={() => scrollToHash('#top')}
+      onClick={scrollToTop}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
     >

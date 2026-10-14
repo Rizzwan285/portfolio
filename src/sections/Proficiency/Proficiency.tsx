@@ -6,7 +6,8 @@ import { sections } from '../../content/site.ts';
 import { toolkit, type TechName } from '../../content/tech.ts';
 import { cx } from '../../lib/cx.ts';
 import { buildProficiencyMatrix, coreStack } from '../../lib/proficiency.ts';
-import { scrollToHash } from '../../lib/scroll.ts';
+import { isPlainClick } from '../../lib/router.ts';
+import { goToAnchor } from '../../lib/scroll.ts';
 import styles from './Proficiency.module.css';
 
 type Focus = { kind: 'row'; name: TechName } | { kind: 'column'; index: number } | null;
@@ -57,8 +58,9 @@ export function Proficiency() {
   };
 
   const onColumnLink = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isPlainClick(event)) return;
     event.preventDefault();
-    scrollToHash(event.currentTarget.getAttribute('href') ?? '#projects');
+    goToAnchor(event.currentTarget.getAttribute('href') ?? '#projects');
   };
 
   return (

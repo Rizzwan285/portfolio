@@ -18,6 +18,8 @@ interface LinkProps extends BaseProps {
   onClick?: MouseEventHandler<HTMLAnchorElement>;
   /** Force opening in a new tab (external URLs do this automatically). */
   newTab?: boolean;
+  /** True when this link points at the page you are already on. */
+  current?: boolean;
 }
 
 interface ActionProps extends BaseProps {
@@ -48,6 +50,7 @@ export function Button(props: LinkProps | ActionProps) {
         className={classes}
         href={props.href}
         onClick={props.onClick}
+        aria-current={props.current ? 'page' : undefined}
         {...(opensNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       >
         {content}

@@ -1,5 +1,5 @@
 /**
- * All portfolio content lives in this folder. Edit the files below — the
+ * All portfolio content lives in this folder. Edit the files below and the
  * components only render what they are given.
  *
  *   profile.ts         name, intro, email, resume path, social links

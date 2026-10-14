@@ -1,11 +1,11 @@
 import { FileText, Menu } from 'lucide-react';
-import { useState, type MouseEvent } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import { profile } from '../../content/profile.ts';
-import { useActiveSection } from '../../hooks/useActiveSection.ts';
+import type { PageKey } from '../../content/site.ts';
 import { useScrollMetrics } from '../../hooks/useScrollMetrics.ts';
 import { asset } from '../../lib/asset.ts';
 import { cx } from '../../lib/cx.ts';
-import { scrollToHash } from '../../lib/scroll.ts';
+import { hrefFor, isPlainClick, navigate } from '../../lib/router.ts';
 import type { NavItem } from '../../lib/sections.ts';
 import { Button } from '../ui/Button.tsx';
 import { MobileMenu } from './MobileMenu.tsx';
@@ -13,47 +13,82 @@ import styles from './Navbar.module.css';
 
 interface NavbarProps {
   items: NavItem[];
+  current: PageKey;
 }
 
-export function Navbar({ items }: NavbarProps) {
+/** Top bar: the site logo, one link per page, and the two standing actions. */
+export function Navbar({ items, current }: NavbarProps) {
   const { y, direction } = useScrollMetrics();
   const [menuOpen, setMenuOpen] = useState(false);
-  const links = items.filter((item) => item.id !== 'contact');
-  const active = useActiveSection(items.map((item) => item.id));
+  const listRef = useRef<HTMLUListElement>(null);
+  const [marker, setMarker] = useState<{ x: number; width: number } | null>(null);
+
+  const links = items.filter((item) => item.key !== 'contact');
+
+  // Slide the underline to the active link, and keep it there on resize.
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const place = () => {
+      const active = list.querySelector<HTMLAnchorElement>('[data-active="true"]');
+      if (!active) {
+        setMarker(null);
+        return;
+      }
+      setMarker({ x: active.offsetLeft, width: active.offsetWidth });
+    };
+
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [current, items]);
 
   const scrolled = y > 24;
   const hidden = y > 520 && direction === 'down' && !menuOpen;
 
-  const onAnchor = (event: MouseEvent<HTMLAnchorElement>) => {
-    const href = event.currentTarget.getAttribute('href');
-    if (!href?.startsWith('#')) return;
+  const go = (slug: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isPlainClick(event)) return;
     event.preventDefault();
     setMenuOpen(false);
-    requestAnimationFrame(() => scrollToHash(href));
+    navigate(slug);
   };
 
   return (
     <header className={cx(styles.nav, scrolled && styles.scrolled, hidden && styles.hidden)}>
       <div className={cx('container', styles.inner)}>
-        <a href="#top" className={styles.logo} onClick={onAnchor} aria-label={`${profile.shortName}, back to top`}>
+        <a
+          href={hrefFor('')}
+          className={styles.logo}
+          onClick={go('')}
+          aria-label={`${profile.shortName}, home`}
+        >
           {profile.shortName}
-          <span className={styles.lamp} aria-hidden="true" />
         </a>
 
-        <nav aria-label="Sections" className={styles.links}>
-          <ul role="list">
+        <nav aria-label="Pages" className={styles.links}>
+          <ul role="list" ref={listRef}>
             {links.map((item) => (
-              <li key={item.id}>
+              <li key={item.key}>
                 <a
-                  href={`#${item.id}`}
-                  onClick={onAnchor}
-                  className={cx(styles.link, active === item.id && styles.active)}
-                  aria-current={active === item.id ? 'true' : undefined}
+                  href={hrefFor(item.slug)}
+                  onClick={go(item.slug)}
+                  data-active={item.key === current}
+                  className={cx(styles.link, item.key === current && styles.active)}
+                  aria-current={item.key === current ? 'page' : undefined}
                 >
                   {item.label}
                 </a>
               </li>
             ))}
+            {marker && (
+              <span
+                className={styles.marker}
+                aria-hidden="true"
+                style={{ '--x': `${marker.x}px`, '--w': `${marker.width}px` } as CSSProperties}
+              />
+            )}
           </ul>
         </nav>
 
@@ -61,7 +96,12 @@ export function Navbar({ items }: NavbarProps) {
           <Button variant="ghost" href={asset(profile.resume)} newTab icon={<FileText />} className={styles.resume}>
             Resume
           </Button>
-          <Button href="#contact" onClick={onAnchor} className={styles.contact}>
+          <Button
+            href={hrefFor('contact')}
+            onClick={go('contact')}
+            current={current === 'contact'}
+            className={styles.contact}
+          >
             Contact me
           </Button>
           <button
@@ -77,7 +117,16 @@ export function Navbar({ items }: NavbarProps) {
         </div>
       </div>
 
-      <MobileMenu open={menuOpen} items={items} active={active} onClose={() => setMenuOpen(false)} onNavigate={onAnchor} />
+      <MobileMenu
+        open={menuOpen}
+        items={items}
+        current={current}
+        onClose={() => setMenuOpen(false)}
+        onNavigate={(slug) => {
+          setMenuOpen(false);
+          navigate(slug);
+        }}
+      />
     </header>
   );
 }

@@ -1,3 +1,5 @@
+import { copyFileSync, existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import { siteMeta } from './src/content/site.ts';
@@ -35,6 +37,27 @@ function siteMetaPlugin(siteUrl: string | undefined): Plugin {
   };
 }
 
+/**
+ * Static hosts only know about index.html, so a deep link like /work would
+ * 404. Shipping an identical 404.html makes GitHub Pages (and most other
+ * static hosts) hand those paths back to the app, which then routes them.
+ */
+function spaFallbackPlugin(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'spa-fallback',
+    apply: 'build',
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    // After the write, so index.html has been through every HTML transform.
+    closeBundle() {
+      const index = resolve(outDir, 'index.html');
+      if (existsSync(index)) copyFileSync(index, resolve(outDir, '404.html'));
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -42,7 +65,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base,
-    plugins: [react(), siteMetaPlugin(env.VITE_SITE_URL)],
+    plugins: [react(), siteMetaPlugin(env.VITE_SITE_URL), spaFallbackPlugin()],
     build: {
       target: 'es2022',
       assetsInlineLimit: 0,

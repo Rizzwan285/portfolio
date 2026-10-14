@@ -9,16 +9,21 @@ interface DarkroomImageProps {
   alt: string;
   /** Artwork shown when there is no image (or it fails to load). */
   fallback: ReactNode;
+  /**
+   * 'photo' keeps the picture and tints it red under the safelight.
+   * 'logo' flattens a transparent wordmark to ivory, so dark logos stay
+   * readable on the dark page and the whole wall reads as one set.
+   */
+  tone?: 'photo' | 'logo';
   className?: string;
 }
 
 /**
- * An image slot that sits under the red safelight: monochrome red until the
- * visitor hovers it or turns the lights on (an ancestor with
- * data-lights="on"). Any photo dropped in gets the same treatment, so a
- * mixed set of images still reads as one series.
+ * An image slot that sits under the red safelight. It stays monochrome until
+ * the visitor hovers it or turns the lights on (an ancestor with
+ * data-lights="on"), so a mixed set of pictures still reads as one series.
  */
-export function DarkroomImage({ src, alt, fallback, className }: DarkroomImageProps) {
+export function DarkroomImage({ src, alt, fallback, tone = 'photo', className }: DarkroomImageProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const showImage = Boolean(src) && failedSrc !== src;
 
@@ -27,14 +32,14 @@ export function DarkroomImage({ src, alt, fallback, className }: DarkroomImagePr
       {showImage && src ? (
         <>
           <img
-            className={styles.image}
+            className={cx(styles.image, tone === 'logo' ? styles.logo : styles.photo)}
             src={asset(src)}
             alt={alt}
             loading="lazy"
             decoding="async"
             onError={() => setFailedSrc(src)}
           />
-          <span className={styles.safelight} aria-hidden="true" />
+          {tone === 'photo' && <span className={styles.safelight} aria-hidden="true" />}
         </>
       ) : (
         <div className={styles.fallback} aria-hidden="true">

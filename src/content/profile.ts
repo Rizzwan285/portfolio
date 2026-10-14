@@ -19,16 +19,16 @@ export const profile = {
   timeZone: 'Asia/Kolkata',
   timeZoneLabel: 'IST',
 
-  /** First paragraph in the hero. */
+  /** The one line under the name in the hero. Keep it short. */
   intro:
-    'I take problems from an idea to a working system: data pipelines, retrieval and machine-learning models, and the products built on top of them.',
+    'I build things that learn. Data in, something useful out, and an app on top that people actually end up using.',
 
-  /** Caption under the hero's molecule figure. `projectId` links to a project card. */
-  figure: {
-    text: 'Imatinib, a drug that acts on several kinase targets at once. My current research is generating molecules like it: designed for several targets and properties at the same time.',
-    linkLabel: 'See the research project',
-    projectId: 'drug-generation',
-  },
+  /**
+   * Portrait in the hero. Drop a square file in public/images/ (a Bitmoji
+   * export, a cutout photo) and point this at it, e.g. 'images/avatar.png'.
+   * Leave it empty to keep the drawn one in Avatar.tsx.
+   */
+  avatar: '',
 
   email: 'muhamed.rizwan2005@gmail.com',
 

@@ -18,12 +18,7 @@ export function Education() {
             <div className={styles.main}>
               <h3 className={styles.qualification}>
                 {item.qualification}
-                {item.status && (
-                  <>
-                    {' — '}
-                    <span className={styles.status}>{item.status}</span>
-                  </>
-                )}
+                {item.status && <span className={styles.status}>{item.status}</span>}
               </h3>
               <p className={styles.institution}>
                 {item.institution}

@@ -15,7 +15,7 @@ export function Achievements() {
     <Section config={sections.achievements}>
       <ol role="list" className={styles.board}>
         {achievements.map((item, index) => (
-          <Develop as="li" key={item.event} className={styles.row} delay={index * 70}>
+          <Develop as="li" key={`${item.event}-${item.result}`} className={styles.row} delay={index * 70}>
             <p className={cx(styles.result, !isNumeric(item.result) && styles.word)}>
               {item.resultPrefix && (
                 <span className={cx(styles.prefix, item.resultPrefix.length === 1 && styles.symbol)}>

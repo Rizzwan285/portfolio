@@ -13,7 +13,7 @@ interface ProjectDialogProps {
 
 /**
  * The "enlargement": opening a frame from the contact sheet prints it on
- * ivory paper with the full story — the steps, the details and the stack.
+ * ivory paper with the full story: the steps, the details and the stack.
  */
 export function ProjectDialog({ project, onClose }: ProjectDialogProps) {
   const ref = useModalDialog(project !== null, onClose);

@@ -1,5 +1,5 @@
 /**
- * "What I do" — the disciplines, grouped by where they sit on the path
+ * "What I do": the disciplines, grouped by where they sit on the path
  * from raw data to a shipped product. `proof` lists project ids that
  * demonstrate each discipline; they render as links to the project cards.
  */

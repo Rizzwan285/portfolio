@@ -17,16 +17,9 @@ export const achievements: Achievement[] = [
     detail: 'AI Engineering track, competing with participants nationwide.',
   },
   {
-    event: 'LeetCode Biweekly Contest 182',
-    resultPrefix: '#',
-    result: '43',
-    detail: 'Global rank.',
-  },
-  {
-    event: 'LeetCode Weekly Contest 497',
-    resultPrefix: '#',
-    result: '116',
-    detail: 'Global rank.',
+    event: 'LeetCode',
+    result: 'Knight',
+    detail: 'Earned the Knight badge, which sits in the top 5% of contest ratings.',
   },
   {
     event: 'LeetCode',

@@ -12,7 +12,7 @@ type Filter = Domain | 'all';
 
 /**
  * Projects as a contact sheet. Choosing a filter dims the frames that don't
- * match — the grid never reshuffles, and every #project-… link keeps working.
+ * match. The grid never reshuffles, and every #project- link keeps working.
  */
 export function Projects() {
   const [filter, setFilter] = useState<Filter>('all');

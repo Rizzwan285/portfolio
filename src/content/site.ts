@@ -23,82 +23,95 @@ export const intro = {
 };
 
 /**
- * Sections, in page order. Like DeveloperFolio's `display` flags:
- * set `display: false` to hide a section (and its nav link).
- * `nav` is the label in the top navigation; leave it out to keep a section
- * off the nav. `display: 'auto'` shows the section only when it has content.
+ * Sections. Like DeveloperFolio's `display` flags: set `display: false` to
+ * hide one. `display: 'auto'` shows it only when it has content. Which page
+ * a section lands on is decided by `pages` below.
  */
 export const sections = {
   whatIDo: {
     id: 'what-i-do',
     title: 'What I do',
-    nav: 'What I do',
     display: true,
-    lede: 'I work along the whole path data takes: the pipelines that collect and clean it, the models that learn from it, and the products people actually use.',
+    lede: 'Data goes on a journey. Raw and messy, then cleaned up, then teaching a model something, then quietly running inside an app. I like being there for all of it.',
   },
   experience: {
     id: 'experience',
     title: 'Work experience',
-    nav: 'Experience',
     display: true,
-    lede: 'Engineering inside a global bank, and building digital systems for my own campus.',
+    lede: 'A summer inside a global bank, and a few years building the systems my own campus runs on.',
   },
   proficiency: {
     id: 'proficiency',
     title: 'Proficiency',
-    nav: 'Skills',
     display: true,
-    lede: 'Measured, not self-rated. Each lit cell is a project or role where I used that technology, counted straight from the work below.',
+    lede: 'No star ratings here. Every lit square is a real project or job where I actually used the thing, counted straight from the work itself.',
   },
   education: {
     id: 'education',
     title: 'Education',
-    nav: 'Education',
     display: true,
-    lede: 'Data Science and Engineering at IIT Palakkad, after CBSE schooling in Kerala.',
+    lede: 'Data Science and Engineering at IIT Palakkad, by way of a CBSE classroom in Kerala.',
   },
   projects: {
     id: 'projects',
     title: 'Projects',
-    nav: 'Projects',
     display: true,
-    lede: 'Retrieval systems, generative models, data platforms and full-stack products. Open any project to see how it was built.',
+    lede: 'Search engines, generative models, data platforms and full-stack apps. Open any one of them to see how it came together.',
   },
   achievements: {
     id: 'achievements',
     title: 'Achievements',
-    nav: 'Achievements',
     display: true,
-    lede: 'Competitive programming and national-level competitions.',
+    lede: 'Contests, hackathons and a lot of late-night problem solving.',
   },
   certifications: {
     id: 'certifications',
     title: 'Certifications',
     display: 'auto',
-    lede: 'Courses and credentials.',
+    lede: 'Courses I sat through properly, with the paper to show for it.',
   },
   beyond: {
     id: 'beyond',
     title: 'Beyond academics',
-    nav: 'Beyond',
     display: true,
-    lede: 'The person behind the resume: who I support, what I watch, what I shoot, and what I help run on campus.',
+    lede: 'The stuff that never makes it onto a resume. Who I support, what I rewatch, what I shoot, and what I help run on campus.',
   },
   contact: {
     id: 'contact',
     title: 'Contact me',
-    nav: 'Contact',
     display: true,
-    lede: 'Have a role, a research idea or a project in mind? I would love to hear about it.',
+    lede: 'Got a role, a research idea, or something you want built? I would love to hear about it.',
   },
 } satisfies Record<string, SectionConfig>;
+
+/**
+ * Pages, in top-bar order. Each one lists the sections it shows, so moving a
+ * section to another page is a one-line change here. The first page is the
+ * home page and its slug must stay empty.
+ */
+export const pages = {
+  home: { slug: '', nav: 'Home', sections: ['whatIDo'] },
+  work: { slug: 'work', nav: 'Work', sections: ['experience', 'projects'] },
+  skills: { slug: 'skills', nav: 'Skills', sections: ['proficiency', 'certifications'] },
+  education: { slug: 'education', nav: 'Education', sections: ['education', 'achievements'] },
+  beyond: { slug: 'beyond', nav: 'Beyond', sections: ['beyond'] },
+  contact: { slug: 'contact', nav: 'Contact', sections: ['contact'] },
+} satisfies Record<string, PageConfig>;
 
 export interface SectionConfig {
   id: string;
   title: string;
-  nav?: string;
   display: boolean | 'auto';
   lede: string;
 }
 
+export interface PageConfig {
+  /** Path after the base URL. The home page uses ''. */
+  slug: string;
+  /** Label in the top bar. */
+  nav: string;
+  sections: readonly SectionKey[];
+}
+
 export type SectionKey = keyof typeof sections;
+export type PageKey = keyof typeof pages;

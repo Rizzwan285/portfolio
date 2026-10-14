@@ -5,7 +5,7 @@ import { profile, socials } from '../../content/profile.ts';
 import { sections } from '../../content/site.ts';
 import { useLocalTime } from '../../hooks/useLocalTime.ts';
 import { asset } from '../../lib/asset.ts';
-import { scrollToHash } from '../../lib/scroll.ts';
+import { scrollToTop } from '../../lib/router.ts';
 import styles from './Contact.module.css';
 
 const YEAR = new Date().getFullYear();
@@ -33,7 +33,7 @@ export function Contact() {
 
   const toTop = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    scrollToHash('#top');
+    scrollToTop();
   };
 
   const links = [

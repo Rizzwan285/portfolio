@@ -6,14 +6,16 @@ import { TextLink } from '../../components/ui/TextLink.tsx';
 import { experience } from '../../content/experience.ts';
 import { sections } from '../../content/site.ts';
 import { formatPeriod } from '../../lib/dates.ts';
-import { scrollToHash } from '../../lib/scroll.ts';
+import { isPlainClick } from '../../lib/router.ts';
+import { goToAnchor } from '../../lib/scroll.ts';
 import styles from './Experience.module.css';
 
 /** Work experience as a timeline, newest first. */
 export function Experience() {
   const onProjectLink = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isPlainClick(event)) return;
     event.preventDefault();
-    scrollToHash(event.currentTarget.getAttribute('href') ?? '#projects');
+    goToAnchor(event.currentTarget.getAttribute('href') ?? '#projects');
   };
 
   return (

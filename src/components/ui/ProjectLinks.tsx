@@ -1,6 +1,7 @@
 import { Fragment, type MouseEvent } from 'react';
 import { projects } from '../../content/projects.ts';
-import { scrollToHash } from '../../lib/scroll.ts';
+import { hrefFor, isPlainClick, navigate } from '../../lib/router.ts';
+import { slugOfSection } from '../../lib/sections.ts';
 import { TextLink } from './TextLink.tsx';
 
 interface ProjectLinksProps {
@@ -9,16 +10,19 @@ interface ProjectLinksProps {
   className?: string;
 }
 
-/** "Seen in Arcus and Campus Hub" — links that jump to project cards. */
+/** "Seen in Arcus and Campus Hub": links that open the matching project card. */
 export function ProjectLinks({ ids, prefix = 'Seen in', className }: ProjectLinksProps) {
   const found = ids
     .map((id) => projects.find((p) => p.id === id))
     .filter((p): p is (typeof projects)[number] => Boolean(p));
   if (found.length === 0) return null;
 
-  const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
+  const slug = slugOfSection('projects');
+
+  const onClick = (projectId: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isPlainClick(event)) return;
     event.preventDefault();
-    scrollToHash(event.currentTarget.getAttribute('href') ?? '#projects');
+    navigate(slug, `project-${projectId}`);
   };
 
   return (
@@ -27,7 +31,7 @@ export function ProjectLinks({ ids, prefix = 'Seen in', className }: ProjectLink
       {found.map((project, i) => (
         <Fragment key={project.id}>
           {i > 0 && (i === found.length - 1 ? ' and ' : ', ')}
-          <TextLink href={`#project-${project.id}`} onClick={onClick}>
+          <TextLink href={`${hrefFor(slug)}#project-${project.id}`} onClick={onClick(project.id)}>
             {project.short}
           </TextLink>
         </Fragment>

@@ -21,7 +21,7 @@ function parse(value: string) {
 
 /**
  * Counts a number up from zero the first time it scrolls into view.
- * Non-numeric values ("Semifinalist") — and reduced-motion visitors — get
+ * Non-numeric values ("Semifinalist"), and reduced-motion visitors, get
  * the final value straight away.
  */
 export function CountUp({ value, durationMs = 1400, className }: CountUpProps) {

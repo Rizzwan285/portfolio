@@ -1,5 +1,5 @@
 /*
- * Design tokens — "Darkroom".
+ * Design tokens: "Darkroom".
  *
  * The site is lit like a photographic darkroom: deep oxblood walls, a red
  * safelight as the only light source, and ivory prints. Red is treated as
@@ -26,7 +26,7 @@
   --ink: #1c0d0e;
   --ink-soft: #6b5450;
 
-  /* Type — one family; the width axis separates display from text */
+  /* Type: one family; the width axis separates display from text */
   --font: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Noto Sans', 'Noto Sans Malayalam', 'Noto Sans Devanagari', sans-serif;
   --display-stretch: 64%;
@@ -58,7 +58,7 @@
   --section-pad: clamp(5rem, 9vw, 9rem);
   --nav-height: 4.25rem;
 
-  /* Shape — radius follows hierarchy: chips < panels; prints stay sharp */
+  /* Shape: radius follows hierarchy: chips < panels; prints stay sharp */
   --radius-chip: 999px;
   --radius-panel: 12px;
   --radius-print: 2px;

@@ -1,6 +1,6 @@
 import type { Education } from './types.ts';
 
-/** Education, newest first. `score` is optional — the B.Tech. shows its status instead. */
+/** Education, newest first. `score` is optional; the B.Tech. shows its status instead. */
 export const education: Education[] = [
   {
     id: 'iit-palakkad',

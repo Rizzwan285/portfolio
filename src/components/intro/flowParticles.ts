@@ -2,7 +2,7 @@
  * The maths behind the intro animation.
  *
  * Every particle starts as a sample of 2-D Gaussian noise and travels a
- * straight path to a point on the rasterised word — the same picture as
+ * straight path to a point on the rasterised word: the same picture as
  * flow matching / rectified flow, where noise is transported to data along
  * (nearly) straight lines as time t goes from 0 to 1.
  */
@@ -17,8 +17,6 @@ export interface Particle {
   /** Amplitude of the residual "noise" wobble, which decays to zero. */
   wobble: number;
   size: number;
-  /** Particles of the full stop stay safelight red. */
-  hot: boolean;
 }
 
 const FONT_FAMILY = '"Archivo Variable", "Archivo", ui-sans-serif, system-ui, sans-serif';
@@ -49,12 +47,11 @@ function gaussian(): number {
 interface Target {
   x: number;
   y: number;
-  hot: boolean;
-  /** Sampling gap in px — particle size scales with it. */
+  /** Sampling gap in px; particle size scales with it. */
   gap: number;
 }
 
-/** Rasterises `word` + "." and samples points on the glyphs. */
+/** Rasterises `word` and samples points on its glyphs. */
 function sampleWord(word: string, width: number, height: number): Target[] {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -68,19 +65,16 @@ function sampleWord(word: string, width: number, height: number): Target[] {
   };
 
   setFont(100);
-  const unitWidth = ctx.measureText(word).width + ctx.measureText('.').width;
+  const unitWidth = ctx.measureText(word).width;
   const size = Math.min((width * 0.8) / (unitWidth / 100), height * 0.4, 380);
 
   setFont(size);
-  const wordWidth = ctx.measureText(word).width;
-  const total = wordWidth + ctx.measureText('.').width;
+  const total = ctx.measureText(word).width;
   const left = (width - total) / 2;
   const baseline = height * 0.47 + size * 0.34;
 
   ctx.fillStyle = '#ff0000';
   ctx.fillText(word, left, baseline);
-  ctx.fillStyle = '#00ff00';
-  ctx.fillText('.', left + wordWidth, baseline);
 
   const top = Math.max(0, Math.floor(baseline - size));
   const boxHeight = Math.min(height - top, Math.ceil(size * 1.3));
@@ -99,7 +93,6 @@ function sampleWord(word: string, width: number, height: number): Target[] {
         targets.push({
           x: boxLeft + x + (Math.random() - 0.5) * gap * 0.6,
           y: top + y + (Math.random() - 0.5) * gap * 0.6,
-          hot: data[i + 1] > data[i],
           gap,
         });
       }
@@ -122,7 +115,7 @@ function sampleWord(word: string, width: number, height: number): Target[] {
 
 export function createParticles(word: string, width: number, height: number): Particle[] {
   const sigma = Math.min(width, height) * 0.3;
-  return sampleWord(word, width, height).map(({ x, y, hot, gap }) => ({
+  return sampleWord(word, width, height).map(({ x, y, gap }) => ({
     sx: width / 2 + gaussian() * sigma * 1.35,
     sy: height / 2 + gaussian() * sigma,
     tx: x,
@@ -132,7 +125,6 @@ export function createParticles(word: string, width: number, height: number): Pa
     phase: Math.random() * Math.PI * 2,
     wobble: 3 + Math.random() * 11,
     size: gap * (0.38 + Math.random() * 0.26),
-    hot,
   }));
 }
 
@@ -148,7 +140,6 @@ const RAMP = Array.from({ length: STEPS }, (_, i) => {
   const alpha = 0.62 + 0.38 * k;
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 });
-const HOT = 'rgb(255, 74, 58)';
 
 /**
  * Returns a draw function for the given particles. Buffers are allocated
@@ -156,7 +147,7 @@ const HOT = 'rgb(255, 74, 58)';
  */
 export function createRenderer(particles: Particle[]) {
   const positions = new Float32Array(particles.length * 3);
-  const buckets: number[][] = Array.from({ length: STEPS + 1 }, () => []);
+  const buckets: number[][] = Array.from({ length: STEPS }, () => []);
 
   /** Draws the field at time t ∈ [0, 1]. */
   return function draw(ctx: CanvasRenderingContext2D, t: number, now: number, dpr: number): void {
@@ -171,13 +162,13 @@ export function createRenderer(particles: Particle[]) {
       positions[i * 3] = p.sx + (p.tx - p.sx) * e + Math.sin(now * 0.003 + p.phase) * residual;
       positions[i * 3 + 1] = p.sy + (p.ty - p.sy) * e + Math.cos(now * 0.0026 + p.phase * 1.3) * residual;
       positions[i * 3 + 2] = p.size * (0.85 + 0.45 * e);
-      buckets[p.hot ? STEPS : Math.min(STEPS - 1, Math.floor(e * STEPS))].push(i);
+      buckets[Math.min(STEPS - 1, Math.floor(e * STEPS))].push(i);
     }
 
-    for (let b = 0; b <= STEPS; b++) {
+    for (let b = 0; b < STEPS; b++) {
       const list = buckets[b];
       if (list.length === 0) continue;
-      ctx.fillStyle = b === STEPS ? HOT : RAMP[b];
+      ctx.fillStyle = RAMP[b];
       for (const i of list) {
         const s = positions[i * 3 + 2] * dpr;
         ctx.fillRect(positions[i * 3] * dpr - s / 2, positions[i * 3 + 1] * dpr - s / 2, s, s);

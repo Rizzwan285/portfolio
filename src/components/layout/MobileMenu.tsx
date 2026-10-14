@@ -1,23 +1,31 @@
 import { X } from 'lucide-react';
 import type { CSSProperties, MouseEvent } from 'react';
 import { profile, socials } from '../../content/profile.ts';
+import type { PageKey } from '../../content/site.ts';
 import { useModalDialog } from '../../hooks/useModalDialog.ts';
 import { asset } from '../../lib/asset.ts';
 import { cx } from '../../lib/cx.ts';
+import { hrefFor, isPlainClick } from '../../lib/router.ts';
 import type { NavItem } from '../../lib/sections.ts';
 import styles from './MobileMenu.module.css';
 
 interface MobileMenuProps {
   open: boolean;
   items: NavItem[];
-  active: string | null;
+  current: PageKey;
   onClose: () => void;
-  onNavigate: (event: MouseEvent<HTMLAnchorElement>) => void;
+  onNavigate: (slug: string) => void;
 }
 
 /** Full-screen menu for small screens, built on a native modal <dialog>. */
-export function MobileMenu({ open, items, active, onClose, onNavigate }: MobileMenuProps) {
+export function MobileMenu({ open, items, current, onClose, onNavigate }: MobileMenuProps) {
   const ref = useModalDialog(open, onClose);
+
+  const go = (slug: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isPlainClick(event)) return;
+    event.preventDefault();
+    onNavigate(slug);
+  };
 
   return (
     <dialog ref={ref} className={styles.menu} aria-label="Menu">
@@ -28,15 +36,15 @@ export function MobileMenu({ open, items, active, onClose, onNavigate }: MobileM
         </button>
       </div>
 
-      <nav aria-label="Sections">
+      <nav aria-label="Pages">
         <ul role="list" className={styles.list}>
           {items.map((item, index) => (
-            <li key={item.id} style={{ '--i': index } as CSSProperties}>
+            <li key={item.key} style={{ '--i': index } as CSSProperties}>
               <a
-                href={`#${item.id}`}
-                onClick={onNavigate}
-                className={cx(styles.link, active === item.id && styles.active)}
-                aria-current={active === item.id ? 'true' : undefined}
+                href={hrefFor(item.slug)}
+                onClick={go(item.slug)}
+                className={cx(styles.link, item.key === current && styles.active)}
+                aria-current={item.key === current ? 'page' : undefined}
               >
                 {item.label}
               </a>

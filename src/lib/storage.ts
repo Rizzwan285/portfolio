@@ -14,6 +14,6 @@ export function writeSession(key: string, value: string): void {
   try {
     window.sessionStorage.setItem(key, value);
   } catch {
-    /* storage unavailable — nothing to persist */
+    /* storage unavailable, nothing to persist */
   }
 }

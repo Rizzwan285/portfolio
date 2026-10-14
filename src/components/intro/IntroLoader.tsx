@@ -6,7 +6,7 @@ import styles from './IntroLoader.module.css';
 interface IntroLoaderProps {
   word: string;
   durationMs: number;
-  /** Called as the overlay starts to fade — the hero begins its entrance. */
+  /** Called as the overlay starts to fade; the hero begins its entrance. */
   onReveal: () => void;
   /** Called once the overlay has fully faded and can be removed. */
   onDone: () => void;

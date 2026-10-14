@@ -1,4 +1,4 @@
-/* Reset — small and modern */
+/* Reset: small and modern */
 *,
 *::before,
 *::after {
@@ -152,7 +152,7 @@ html {
   transform: none;
 }
 
-/* "Develop" reveal — content sharpens like a print in the tray. Used sparingly. */
+/* "Develop" reveal: content sharpens like a print in the tray. Used sparingly. */
 .develop {
   opacity: 0;
   filter: blur(7px);
@@ -174,6 +174,26 @@ body.is-locked {
   overflow: hidden;
 }
 
+/*
+ * Each arrival fades up, so switching pages feels like a move rather than a
+ * jump. The home page opens with the hero, which brings its own top padding;
+ * every other page has to clear the fixed top bar itself.
+ */
+.page {
+  animation: page-in 520ms var(--ease-out) both;
+}
+
+.page-inner > section:first-child {
+  padding-top: calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem));
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -191,5 +211,9 @@ body.is-locked {
   .develop {
     filter: none;
     transform: none;
+  }
+
+  .page {
+    animation: none;
   }
 }

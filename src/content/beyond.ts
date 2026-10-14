@@ -1,7 +1,7 @@
 import type { Photo, RoleGroup, Show, SportsTeam } from './types.ts';
 
 /**
- * "Beyond academics" — the person behind the resume.
+ * "Beyond academics": the person behind the resume.
  *
  * Images: every team and show has an optional `image`. Put a file in
  * public/images/interests/ and set e.g. `image: 'images/interests/real-madrid.jpg'`.
@@ -24,6 +24,8 @@ export const beyond = {
       nickname: 'Los Blancos',
       home: 'Santiago Bernabéu, Madrid',
       colors: ['#F7F5F0', '#FEBE10', '#00529F'],
+      image: 'images/interests/real-madrid.jpg',
+      imageAlt: 'The Santiago Bernabéu lit up at night',
     },
     {
       id: 'argentina',
@@ -33,6 +35,8 @@ export const beyond = {
       nickname: 'La Albiceleste',
       home: 'Buenos Aires',
       colors: ['#75AADB', '#F7F5F0', '#75AADB'],
+      image: 'images/interests/argentina.jpg',
+      imageAlt: 'Argentina lifting the 2022 World Cup trophy',
     },
     {
       id: 'golden-state-warriors',
@@ -42,17 +46,19 @@ export const beyond = {
       nickname: 'The Dubs',
       home: 'Chase Center, San Francisco',
       colors: ['#1D428A', '#FFC72C', '#1D428A'],
+      image: 'images/interests/golden-state-warriors.jpg',
+      imageAlt: 'A Warriors home game under the arena spotlights',
     },
   ] satisfies SportsTeam[] as SportsTeam[],
 
   shows: [
-    { id: 'big-bang-theory', title: 'The Big Bang Theory', years: '2007–2019', seasons: 12 },
-    { id: 'friends', title: 'Friends', years: '1994–2004', seasons: 10 },
-    { id: 'himym', title: 'How I Met Your Mother', years: '2005–2014', seasons: 9 },
-    { id: 'modern-family', title: 'Modern Family', years: '2009–2020', seasons: 11 },
-    { id: 'brooklyn-nine-nine', title: 'Brooklyn Nine-Nine', years: '2013–2021', seasons: 8 },
-    { id: 'the-office', title: 'The Office', years: '2005–2013', seasons: 9 },
-    { id: 'new-girl', title: 'New Girl', years: '2011–2018', seasons: 7 },
+    { id: 'big-bang-theory', title: 'The Big Bang Theory', years: '2007-2019', seasons: 12, image: 'images/interests/big-bang-theory.png' },
+    { id: 'friends', title: 'Friends', years: '1994-2004', seasons: 10, image: 'images/interests/friends.png' },
+    { id: 'himym', title: 'How I Met Your Mother', years: '2005-2014', seasons: 9, image: 'images/interests/himym.png' },
+    { id: 'modern-family', title: 'Modern Family', years: '2009-2020', seasons: 11, image: 'images/interests/modern-family.png' },
+    { id: 'brooklyn-nine-nine', title: 'Brooklyn Nine-Nine', years: '2013-2021', seasons: 8, image: 'images/interests/brooklyn-nine-nine.png' },
+    { id: 'the-office', title: 'The Office', years: '2005-2013', seasons: 9, image: 'images/interests/the-office.png' },
+    { id: 'new-girl', title: 'New Girl', years: '2011-2018', seasons: 7, image: 'images/interests/new-girl.png' },
   ] satisfies Show[] as Show[],
 
   photography: {

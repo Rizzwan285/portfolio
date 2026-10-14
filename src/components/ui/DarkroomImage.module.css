@@ -42,3 +42,22 @@
 :global([data-lights='on']) .safelight {
   opacity: 0;
 }
+
+/*
+ * Wordmarks arrive as transparent PNGs in their own brand colours, several of
+ * them near-black. Flattening them to ivory keeps every logo readable on the
+ * dark page and makes the wall read as one set; turning the lights on hands
+ * them back their real colours.
+ */
+.logo {
+  object-fit: contain;
+  padding: 14%;
+  filter: brightness(0) invert(0.93) sepia(0.12);
+  transform: none;
+}
+
+:global(.lights-scope:hover) .logo,
+:global([data-lights='on']) .logo {
+  filter: none;
+  transform: scale(1.03);
+}

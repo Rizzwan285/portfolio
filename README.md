@@ -45,7 +45,8 @@ No environment variables are required (see [Environment variables](#environment-
 | Styling | CSS Modules + design tokens in plain CSS (no CSS framework) |
 | Type | Archivo variable font (width + weight axes), self-hosted via `@fontsource-variable/archivo` |
 | Icons | `lucide-react` (generic icons only — no brand logos) |
-| Animation | CSS transitions, `IntersectionObserver`, and two small `<canvas>` renderers (intro and molecule) — no animation library |
+| Routing | A ~90-line history-API router in `src/lib/router.ts` (no router dependency) |
+| Animation | CSS transitions, `IntersectionObserver`, and one small `<canvas>` renderer for the intro, no animation library |
 | Linting | oxlint |
 
 Runtime dependencies are just React, the font and the icon set.
@@ -57,7 +58,7 @@ Runtime dependencies are just React, the font and the icon set.
 ```
 ├── public/                    Static files, copied as-is into the build
 │   ├── resume/                Your resume PDF (linked from the hero, nav and contact)
-│   ├── images/interests/      Optional photos for teams and sitcoms
+│   ├── images/interests/      Team photos and sitcom wordmarks (see CREDITS.md there)
 │   ├── images/photography/    Optional photos for the photography viewfinder
 │   ├── favicon.svg            Browser tab icon
 │   ├── apple-touch-icon.png   Home-screen icon
@@ -70,13 +71,12 @@ Runtime dependencies are just React, the font and the icon set.
 │   │   ├── layout/            Navbar, mobile menu, Section wrapper, back-to-top
 │   │   ├── ui/                Button, TextLink, TagList, CountUp, Develop (reveal), DarkroomImage
 │   │   ├── intro/             The intro animation (canvas)
-│   │   └── figures/           Molecule figure, built-in artwork, grease-pencil marks
-│   ├── hooks/                 useInView, useActiveSection, useScrollMetrics, …
-│   ├── lib/                   Small helpers (dates, asset paths, proficiency matrix, molecule data)
+│   │   └── figures/           Hero avatar, built-in artwork, grease-pencil marks
+│   ├── hooks/                 useInView, useScrollMetrics, …
+│   ├── lib/                   Small helpers (router, dates, asset paths, proficiency matrix)
 │   ├── styles/                tokens.css (colours, type scale, spacing) and global.css
-│   ├── App.tsx                Page composition and the section registry
+│   ├── App.tsx                Routing, page composition and the section registry
 │   └── main.tsx               Entry point
-├── scripts/generate-molecule.py   Regenerates the hero molecule (optional, needs RDKit)
 ├── docs/preview.jpg           Screenshot used at the top of this README
 ├── .github/workflows/deploy-pages.yml   GitHub Pages deployment
 ├── index.html                 HTML shell (title/description are filled in from content/site.ts)
@@ -93,9 +93,9 @@ Everything you'd want to change is in **`src/content/`**. Components only render
 
 | What | File |
 | --- | --- |
-| Name, intro paragraph, email, resume path, hero figure caption | `src/content/profile.ts` |
+| Name, hero line, email, resume path, avatar image | `src/content/profile.ts` |
 | **Social links** (LinkedIn, GitHub, Instagram, Email) | `src/content/profile.ts` → `socials` |
-| Page title and description, intro animation, **section order / visibility / titles / ledes / nav labels** | `src/content/site.ts` |
+| Page title and description, intro animation, **pages and the top bar**, section titles / ledes / visibility | `src/content/site.ts` |
 | What I do | `src/content/whatIDo.ts` |
 | Work experience | `src/content/experience.ts` |
 | Projects (and their GitHub / live links) | `src/content/projects.ts` |
@@ -109,15 +109,28 @@ Everything you'd want to change is in **`src/content/`**. Components only render
 
 Edit `socials` in `src/content/profile.ts`. Each entry has a label, the handle shown in the contact section, and the URL. The order there is the order on the page. The email address is also set once in `profile.email`.
 
-### Sections: show, hide, rename, reorder
+### Pages and the top bar
 
-In `src/content/site.ts`, each section has:
+The site is a handful of pages rather than one long scroll. Both halves live in `src/content/site.ts`.
 
-- `display` — `true` / `false` (like DeveloperFolio), or `'auto'` to show only when it has content.
-- `title` and `lede` — the heading and the sentence next to it.
-- `nav` — the label in the top navigation; remove it to keep a section out of the nav.
+`sections` describes each block of content:
 
-The order of keys in `sections` is the order on the page.
+- `display`: `true` / `false` (like DeveloperFolio), or `'auto'` to show only when it has content.
+- `title` and `lede`: the heading and the sentence next to it.
+
+`pages` decides which page each section appears on, and the order of the keys is the order of the top bar:
+
+```ts
+export const pages = {
+  home: { slug: '', nav: 'Home', sections: ['whatIDo'] },
+  work: { slug: 'work', nav: 'Work', sections: ['experience', 'projects'] },
+  // …
+};
+```
+
+Moving a section to another page is a one-line change: take its key out of one `sections` array and put it in another. Cross-page links (the "Seen in …" project links, for example) follow it automatically, because they look up the owning page rather than hard-coding a URL. The home page's `slug` must stay `''`; the hero is always on it.
+
+Deep links such as `/work` work on GitHub Pages because the build writes a `404.html` copy of `index.html` (see `spaFallbackPlugin` in `vite.config.ts`), which Pages serves for unknown paths. The app then reads the path and renders the right page.
 
 ### Projects
 
@@ -186,9 +199,15 @@ Replace `public/resume/Muhamed_Rizwan_Mehaboob_Resume.pdf`. If you rename the fi
 
 `public/favicon.svg`, `public/apple-touch-icon.png` (180×180) and `public/og-image.jpg` (1200×630) can be replaced with files of the same names.
 
-### Hero molecule
+### Hero avatar
 
-The molecule data lives in `src/lib/molecule.data.ts`, generated by `scripts/generate-molecule.py` (Python + RDKit). Change `SMILES` and `NAME` in the script and run it to show a different molecule; if the new molecule has elements beyond C, N and O, add a colour for each to `ATOM_STYLE` in `src/components/figures/MoleculeFigure.tsx`.
+The hero shows a flat portrait drawn in `src/components/figures/Avatar.tsx`. To use your own picture instead, drop a square file in `public/images/` and point `profile.avatar` at it:
+
+```ts
+avatar: 'images/avatar.png',
+```
+
+A Bitmoji or Snapchat avatar export works well, as does a cutout photo. Anything square with a transparent or dark background fits the frame. Leave `avatar` empty to keep the drawn one.
 
 ---
 

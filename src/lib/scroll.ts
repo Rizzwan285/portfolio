@@ -1,14 +1,36 @@
-import { prefersReducedMotion } from '../hooks/usePrefersReducedMotion.ts';
+import { sections, type SectionKey } from '../content/site.ts';
+import { currentSlug, navigate, scrollToId, scrollToTop } from './router.ts';
+import { slugOfSection } from './sections.ts';
 
-/** Smoothly scrolls to an in-page anchor like "#contact" and updates the URL. */
-export function scrollToHash(hash: string): void {
+/**
+ * In-page anchors now have to cross pages: a "#project-arcus" link can be
+ * clicked from a section that lives on a different page. This resolves which
+ * page owns an anchor and gets the visitor there either way.
+ */
+
+/** The section key that owns an element id, if any. */
+function ownerOf(id: string): SectionKey | null {
+  if (id.startsWith('project-')) return 'projects';
+  const keys = Object.keys(sections) as SectionKey[];
+  return keys.find((key) => sections[key].id === id) ?? null;
+}
+
+/** Follows an anchor like "#project-arcus", "#contact" or "#top". */
+export function goToAnchor(hash: string): void {
   const id = hash.replace(/^#/, '');
-  const target = id === 'top' ? document.body : document.getElementById(id);
-  if (!target) return;
-  target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-  history.replaceState(null, '', id === 'top' ? window.location.pathname : `#${id}`);
-  if (target instanceof HTMLElement && id !== 'top') {
-    target.setAttribute('tabindex', '-1');
-    target.focus({ preventScroll: true });
+
+  if (!id || id === 'top') {
+    scrollToTop();
+    return;
   }
+
+  const owner = ownerOf(id);
+  if (!owner) {
+    scrollToId(id);
+    return;
+  }
+
+  const slug = slugOfSection(owner);
+  if (slug === currentSlug()) scrollToId(id);
+  else navigate(slug, id);
 }

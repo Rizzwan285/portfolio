@@ -64,3 +64,10 @@
 .button:hover .icon {
   transform: translateY(-1px);
 }
+
+/* The standing "Contact me" link, while you are already on that page. */
+.button[aria-current='page'] {
+  box-shadow:
+    0 0 0 1px var(--darkroom),
+    0 0 0 3px var(--safelight-glow);
+}
